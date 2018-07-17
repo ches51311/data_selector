@@ -2139,11 +2139,13 @@ void MainWindow::SAVE(){
     QString pathto;
 
 
-    pathfrom = fw + "/Categories/template/run.sh";
+    //pathfrom = fw + "/Categories/template/run.sh";
+    pathfrom = "template/run.sh";
     pathto = fw + "/Categories/" + fname + "/source/run.sh";
     QFile::copy(pathfrom, pathto);
 
-    pathfrom = fw + "/Categories/template/stop.sh";
+    //pathfrom = fw + "/Categories/template/stop.sh";
+    pathfrom = "template/stop.sh";
     pathto = fw + "/Categories/" + fname + "/source/stop.sh";
     QFile::copy(pathfrom, pathto);
 
@@ -2159,12 +2161,14 @@ void MainWindow::SAVE(){
 
     QProcess process(this);
     QStringList args;
-    args.append(fw+"/Categories/template/gen_prototxt.py");
+    args.append("template/gen_prototxt.py");
+    //args.append(fw+"/Categories/template/gen_prototxt.py");
     args.append(clsnum);
     args.append(testoutnum);
     args.append("obj_models/"+fname);
     args.append(fw + "/Categories/" + fname);
-    process.start(fw+"/Categories/template/gen_prototxt.sh",args);
+    process.start("template/gen_prototxt.sh",args);
+    //process.start(fw+"/Categories/template/gen_prototxt.sh",args);
     process.waitForFinished(-1);
 
 
