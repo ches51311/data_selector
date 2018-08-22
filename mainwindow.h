@@ -54,6 +54,7 @@ public:
     QString xmlfoldershort;
     QString imgfolder;
     QStringList clsitems;
+    QStringList label;
     QStringList *fl;
 };
 
@@ -68,12 +69,14 @@ public:
     QStringList test;
     QStringList train;
     QStringList val;
+    QStringList del;
     QStringList testcolor;
     QStringList traincolor;
     QStringList valcolor;
     QStringList testischeck;
     QStringList trainischeck;
     QStringList valischeck;
+    QStringList delischeck;
 };
 
 class MainWindow : public QMainWindow
@@ -107,13 +110,19 @@ private slots:
 
     void on_btnTestVal_clicked();
 
+    void on_btnTestDel_clicked();
+
     void on_btnTrainVal_clicked();
 
     void on_btnTrainTest_clicked();
 
+    void on_btnTrainDel_clicked();
+
     void on_btnValTest_clicked();
 
     void on_btnValTrain_clicked();
+
+    void on_btnValDel_clicked();
 
     void on_comboBoxCls_currentIndexChanged(const QString &arg1);
 
@@ -169,6 +178,8 @@ private slots:
     void SAVE();
 
     void on_actionOpen_Training_Manager_triggered();
+
+
 
 private:
     Ui::MainWindow *ui;

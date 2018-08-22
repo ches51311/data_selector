@@ -86,10 +86,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->btnTestTrain->setIcon(QIcon("picture/move_to.png"));
     ui->btnTestVal->setIcon(QIcon("picture/move_to.png"));
+    ui->btnTestDel->setIcon(QIcon("picture/move_to.png"));
     ui->btnTrainTest->setIcon(QIcon("picture/move_to.png"));
     ui->btnTrainVal->setIcon(QIcon("picture/move_to.png"));
+    ui->btnTrainDel->setIcon(QIcon("picture/move_to.png"));
     ui->btnValTest->setIcon(QIcon("picture/move_to.png"));
     ui->btnValTrain->setIcon(QIcon("picture/move_to.png"));
+    ui->btnValDel->setIcon(QIcon("picture/move_to.png"));
 
     ShowPicture("picture/start.jpg");
     ui->graphicsView->setEnabled(true);
@@ -429,6 +432,11 @@ void MainWindow::on_actionClass_triggered()
 
 void MainWindow::on_actionGenerate_triggered()
 {
+    if (ui->lsWidgetTest->count() + ui->lsWidgetTrain->count() + ui->lsWidgetVal->count() > 0){
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(NULL, "Question", "Generate again?", QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::No){return;}
+    }
 
 
     int test = currentprj.testitems.count();
@@ -492,6 +500,10 @@ void MainWindow::on_actionCaffe_Configure_triggered()
 void MainWindow::on_actionSave_Project_triggered()
 {
 
+    QMessageBox::StandardButton reply0;
+    reply0 = QMessageBox::question(NULL, "Question", "Save the project?", QMessageBox::Yes | QMessageBox::No);
+    if (reply0 == QMessageBox::No){return;}
+
     SAVE();
 
 }
@@ -514,6 +526,9 @@ void MainWindow::on_actionSave_As_triggered()
         QMessageBox::about(NULL, "Remind", "The file name is already used, please take another name");
         return;
     }
+    QMessageBox::StandardButton reply0;
+    reply0 = QMessageBox::question(NULL, "Question", "Save the project?", QMessageBox::Yes | QMessageBox::No);
+    if (reply0 == QMessageBox::No){return;}
     currentprj.name = globalsaveas;
     SAVE();
 
@@ -640,6 +655,50 @@ void MainWindow::on_btnTestVal_clicked()
 
 }
 
+void MainWindow::on_btnTestDel_clicked()
+{
+    SaveList(ui->comboBoxCls->currentText());
+
+    QStringList temptest;
+    QStringList temptestcolor;
+    QStringList temptestischeck;
+    QStringList tempdel;
+    QStringList tempdelischeck;
+
+    for (QLinkedList<Templist*>::iterator tempiter = templistlist.begin(); tempiter != templistlist.end(); tempiter++){
+        if ((*tempiter)->clsname == ui->comboBoxCls->currentText()){
+            tempdel = (*tempiter)->del;
+            tempdelischeck = (*tempiter)->delischeck;
+            for (int i=0; i<(*tempiter)->test.count(); i++){
+                if ((*tempiter)->testischeck.at(i) == "yes"){
+                    tempdel.append((*tempiter)->test.at(i));
+                    tempdelischeck.append("no");
+                }
+                else{
+                    temptest.append((*tempiter)->test.at(i));
+                    temptestcolor.append((*tempiter)->testcolor.at(i));
+                    temptestischeck.append("no");
+                }
+
+            }
+
+            (*tempiter)->test = temptest;
+            (*tempiter)->testcolor = temptestcolor;
+            (*tempiter)->testischeck = temptestischeck;
+            (*tempiter)->del = tempdel;
+            (*tempiter)->delischeck = tempdelischeck;
+        }
+
+    }
+
+    ShowList();
+
+    RefreshLabelText();
+
+
+
+}
+
 void MainWindow::on_btnTrainVal_clicked()
 {
 
@@ -761,6 +820,49 @@ void MainWindow::on_btnTrainTest_clicked()
 
 }
 
+void MainWindow::on_btnTrainDel_clicked()
+{
+    SaveList(ui->comboBoxCls->currentText());
+
+    QStringList temptrain;
+    QStringList temptraincolor;
+    QStringList temptrainischeck;
+    QStringList tempdel;
+    QStringList tempdelischeck;
+
+    for (QLinkedList<Templist*>::iterator tempiter = templistlist.begin(); tempiter != templistlist.end(); tempiter++){
+        if ((*tempiter)->clsname == ui->comboBoxCls->currentText()){
+            tempdel = (*tempiter)->del;
+            tempdelischeck = (*tempiter)->delischeck;
+            for (int i=0; i<(*tempiter)->train.count(); i++){
+                if ((*tempiter)->trainischeck.at(i) == "yes"){
+                    tempdel.append((*tempiter)->train.at(i));
+                    tempdelischeck.append("no");
+                }
+                else{
+                    temptrain.append((*tempiter)->train.at(i));
+                    temptraincolor.append((*tempiter)->traincolor.at(i));
+                    temptrainischeck.append("no");
+                }
+
+            }
+
+            (*tempiter)->train = temptrain;
+            (*tempiter)->traincolor = temptraincolor;
+            (*tempiter)->trainischeck = temptrainischeck;
+            (*tempiter)->del = tempdel;
+            (*tempiter)->delischeck = tempdelischeck;
+        }
+
+    }
+
+    ShowList();
+
+    RefreshLabelText();
+
+
+}
+
 void MainWindow::on_btnValTest_clicked()
 {
     SaveList(ui->comboBoxCls->currentText());
@@ -879,6 +981,49 @@ void MainWindow::on_btnValTrain_clicked()
     ShowList();
 
     RefreshLabelText();
+
+}
+
+void MainWindow::on_btnValDel_clicked()
+{
+    SaveList(ui->comboBoxCls->currentText());
+
+    QStringList tempval;
+    QStringList tempvalcolor;
+    QStringList tempvalischeck;
+    QStringList tempdel;
+    QStringList tempdelischeck;
+
+    for (QLinkedList<Templist*>::iterator tempiter = templistlist.begin(); tempiter != templistlist.end(); tempiter++){
+        if ((*tempiter)->clsname == ui->comboBoxCls->currentText()){
+            tempdel = (*tempiter)->del;
+            tempdelischeck = (*tempiter)->delischeck;
+            for (int i=0; i<(*tempiter)->val.count(); i++){
+                if ((*tempiter)->valischeck.at(i) == "yes"){
+                    tempdel.append((*tempiter)->val.at(i));
+                    tempdelischeck.append("no");
+                }
+                else{
+                    tempval.append((*tempiter)->val.at(i));
+                    tempvalcolor.append((*tempiter)->valcolor.at(i));
+                    tempvalischeck.append("no");
+                }
+
+            }
+
+            (*tempiter)->val = tempval;
+            (*tempiter)->valcolor = tempvalcolor;
+            (*tempiter)->valischeck = tempvalischeck;
+            (*tempiter)->del = tempdel;
+            (*tempiter)->delischeck = tempdelischeck;
+        }
+
+    }
+
+    ShowList();
+
+    RefreshLabelText();
+
 
 }
 
@@ -1048,10 +1193,16 @@ void MainWindow::InputCls(QString file1){
     Classes *cls = new Classes;
     QStringList *fl = new QStringList;
     QStringList clsitems;
-    QJsonArray clsname = doc2.value("classification").toArray();
+    QString clsname = doc2.value("predefineClass").toString();
+    QJsonArray jlabel = doc2.value("classification").toArray();
 
+    QStringList label;
+    for (int i=0; i<jlabel.count(); i++){
+        label.append(jlabel.at(i).toString());
+    }
+    cls->label = label;
 
-    cls->name = clsname.at(0).toString();
+    cls->name = clsname;
     cls->xmlfolder = fileup +"/"+ doc2.value("anno_dir_path").toString();
     cls->xmlfoldershort = filecurrent+"/"+ doc2.value("anno_dir_path").toString();
     cls->imgfolder = fileup +"/"+ doc2.value("img_dir_path").toString();
@@ -1111,7 +1262,7 @@ void MainWindow::InputCls(QString file1){
     bool rep = false;
 
     for (QLinkedList<Classes*>::iterator clsiter = clslist.begin(); clsiter != clslist.end(); clsiter++){
-        if ((*clsiter)->name == clsname.at(0).toString()){
+        if ((*clsiter)->name == clsname){
             rep =true;
         }
     }
@@ -1618,7 +1769,7 @@ void MainWindow::InitialList(){
             temptest.append(randomall.at(i));
             temptestcolor.append("nocolor");
         }
-        for (int i=traincount; i<traincount+traincount; i++){
+        for (int i=testcount; i<testcount+traincount; i++){
             temptrain.append(randomall.at(i));
             temptraincolor.append("nocolor");
         }
@@ -1657,6 +1808,7 @@ void MainWindow::ShowList(){
     ui->lsWidgetTest->clear();
     ui->lsWidgetTrain->clear();
     ui->lsWidgetVal->clear();
+    ui->lsWidgetDel->clear();
     QStringList templisttest;
     QStringList templisttestcolor;
     QStringList templisttestischeck;
@@ -1666,17 +1818,21 @@ void MainWindow::ShowList(){
     QStringList templistval;
     QStringList templistvalcolor;
     QStringList templistvalischeck;
+    QStringList templistdel;
+    QStringList templistdelischeck;
     for (QLinkedList<Templist*>::iterator tempiter = templistlist.begin(); tempiter != templistlist.end(); tempiter++){
         if((*tempiter)->clsname == clsname){
             templisttest = (*tempiter)->test;
             templisttrain = (*tempiter)->train;
             templistval = (*tempiter)->val;
+            templistdel = (*tempiter)->del;
             templisttestcolor = (*tempiter)->testcolor;
             templisttraincolor = (*tempiter)->traincolor;
             templistvalcolor = (*tempiter)->valcolor;
             templisttestischeck = (*tempiter)->testischeck;
             templisttrainischeck = (*tempiter)->trainischeck;
             templistvalischeck = (*tempiter)->valischeck;
+            templistdelischeck = (*tempiter)->delischeck;
         }
     }
 
@@ -1742,6 +1898,23 @@ void MainWindow::ShowList(){
             ui->lsWidgetVal->item(i)->setBackgroundColor(Qt::cyan);
         }
     }
+
+    for (int i=0; i<templistdel.count(); i++){
+        ui->lsWidgetDel->addItem(templistdel.at(i));
+        ui->lsWidgetDel->item(i)->setFlags(ui->lsWidgetDel->item(i)->flags()| Qt::ItemIsUserCheckable);
+        if (templistdelischeck.at(i) == "no"){
+            ui->lsWidgetDel->item(i)->setCheckState(Qt::Unchecked);
+        }
+        else{
+            ui->lsWidgetDel->item(i)->setCheckState(Qt::Checked);
+        }
+
+    }
+
+    ui->lsWidgetTest->sortItems();
+    ui->lsWidgetTrain->sortItems();
+    ui->lsWidgetVal->sortItems();
+    ui->lsWidgetDel->sortItems();
 }
 
 //Save the current list
@@ -1750,6 +1923,7 @@ void MainWindow::SaveList(QString currentcls){
     QStringList temptestischeck;
     QStringList temptrainischeck;
     QStringList tempvalischeck;
+    QStringList tempdelischeck;
     for (QLinkedList<Templist*>::iterator tempiter = templistlist.begin(); tempiter != templistlist.end(); tempiter++){
         if ((*tempiter)->clsname == currentcls){
             if ((*tempiter)->test.count() != ui->lsWidgetTest->count()){return;}
@@ -1786,9 +1960,22 @@ void MainWindow::SaveList(QString currentcls){
                 }
             }
 
+            for (int i=0; i<(*tempiter)->del.count(); i++){
+                for (int j=0; j<ui->lsWidgetDel->count(); j++){
+                    if (ui->lsWidgetDel->item(j)->text() == (*tempiter)->del.at(i) && ui->lsWidgetDel->item(j)->checkState() == Qt::Checked){
+                        tempdelischeck.append("yes");
+                    }
+                    if (ui->lsWidgetDel->item(j)->text() == (*tempiter)->del.at(i) && ui->lsWidgetDel->item(j)->checkState() == Qt::Unchecked){
+                        tempdelischeck.append("no");
+                    }
+                }
+            }
+
+
             (*tempiter)->testischeck = temptestischeck;
             (*tempiter)->trainischeck = temptrainischeck;
             (*tempiter)->valischeck = tempvalischeck;
+            (*tempiter)->delischeck = tempdelischeck;
         }
     }
 
@@ -1925,10 +2112,10 @@ void MainWindow::SetSolver(){
     globalsolver.append("0.1");
     globalsolver.append("0.9");
     globalsolver.append("0.0005");
-    globalsolver.append("12000");
+    globalsolver.append("120000");
     globalsolver.append("1");
     globalsolver.append("619");
-    globalsolver.append("10000");
+    globalsolver.append("1000");
     globalsolver.append("10");
     globalsolver.append("80000");
     globalsolver.append("0");
@@ -2110,10 +2297,37 @@ void MainWindow::SAVE(){
     trainvalfile.close();
 
     //create labelmap.prototxt
+
+    ///////////////////////////do there
+
+
+    QStringList label;
+    bool check = false;
+
+    for (int i=0; i<currentprj.prjitems.count(); i++){
+        for (QLinkedList<Classes*>::iterator clsiter = clslist.begin(); clsiter != clslist.end(); clsiter++){
+            if (currentprj.prjitems.at(i) == (*clsiter)->name){
+                for (int j=0; j<(*clsiter)->label.count(); j++){
+                    check = false;
+                    for (int k=0; k<label.count(); k++){
+                        if (label.at(k) == (*clsiter)->label.at(j)){
+                            check = true;
+                        }
+                    }
+                    if (check == false){
+                        label.append((*clsiter)->label.at(j));
+                    }
+                }
+            }
+        }
+    }
+
+
+
     QFile labelfile(fw + "/Categories/" +fname+ "/labelmap.prototxt");
     labelfile.open(QIODevice::WriteOnly);
     QTextStream labelout(&labelfile);
-    int labellen = currentprj.prjitems.count();
+    int labellen = label.count();
     QString labelitem;
 
     labelout << "item {\n";
@@ -2123,7 +2337,7 @@ void MainWindow::SAVE(){
     labelout << "}\n";
 
     for (int i=0; i<labellen; i++){
-        labelitem = currentprj.prjitems.at(i);
+        labelitem = label.at(i);
         labelout << "item {\n";
         labelout << "  name: \""+labelitem+"\"\n";
         labelout << "  label: "+QString::number(i+1)+"\n";
@@ -2149,6 +2363,9 @@ void MainWindow::SAVE(){
     pathto = fw + "/Categories/" + fname + "/source/stop.sh";
     QFile::copy(pathfrom, pathto);
 
+    pathfrom = "template/pdfreport.py";
+    pathto = fw + "/Categories/" + fname + "/source/pdfreport.py";
+    QFile::copy(pathfrom, pathto);
 
     QString testoutnum;
     QString clsnum;
@@ -2234,3 +2451,9 @@ void MainWindow::on_actionOpen_Training_Manager_triggered()
     QProcess process2(this);
     process2.startDetached("training_manager  "+ fw + "/Categories/" + currentprj.name + ".prj");
 }
+
+
+
+
+
+

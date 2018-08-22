@@ -17,14 +17,14 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>100</y>
-      <width>261</width>
-      <height>601</height>
+      <width>285</width>
+      <height>581</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="elideMode">
      <enum>Qt::ElideNone</enum>
@@ -62,6 +62,13 @@
           </property>
           <property name="text">
            <string>Validation</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnTestDel">
+          <property name="text">
+           <string>deleted</string>
           </property>
          </widget>
         </item>
@@ -115,6 +122,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="btnTrainDel">
+          <property name="text">
+           <string>deleted</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -165,6 +179,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="btnValDel">
+          <property name="text">
+           <string>deleted</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -176,6 +197,56 @@
       </item>
       <item>
        <widget class="QListWidget" name="lsWidgetVal"/>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>deleted</string>
+     </attribute>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QPushButton" name="btnDelTest">
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Test</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnDelTrain">
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Train</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnDelVal">
+          <property name="text">
+           <string>validation</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QListWidget" name="lsWidgetDel"/>
       </item>
      </layout>
     </widget>
@@ -204,7 +275,7 @@
      <rect>
       <x>10</x>
       <y>70</y>
-      <width>251</width>
+      <width>281</width>
       <height>25</height>
      </rect>
     </property>
